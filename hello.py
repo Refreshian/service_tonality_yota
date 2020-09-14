@@ -37,7 +37,7 @@ def show_tonality(text):
     a.append(text)
     pred_Sequences = tokenizer_yota.texts_to_sequences(a) #разбиваем текст на последовательность индексов
     xTrainE_pred = pad_sequences(pred_Sequences, maxlen=400)
-    return str(model.predict_classes((xTrainE_pred)))
+    return str(modelE.predict_classes((xTrainE_pred)))
 
 @app.route('/badrequest400')
 def bad_request():
@@ -82,17 +82,16 @@ class MyForm(FlaskForm):
 def submit():
     form = MyForm()
     if form.validate_on_submit():
-        print(form.name.data)
+        # print(form.name.data)
 
-                
         f = form.file.data
-        filename = form.name.data + '.xlsx'
-        # save file to db
+        filename = form.name.data + '.csv'
+
         # f.save(os.path.join(
         #     filename
         # ))
 
-        df = pd.read_excel(filename)
+        df = pd.read_csv(f, encoding='utf-8')
         df.columns = ['Текст', 'Тональность']
         df_np = df.to_numpy()
         c = []
@@ -109,7 +108,7 @@ def submit():
             
         df['Тональность 2'] = c
 
-        df.to_excel(filename, engine='xlsxwriter', index=False)
+        df.to_csv(filename, index=False)
 
         return send_file(filename,
                         mimetype='text/csv',
