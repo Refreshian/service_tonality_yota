@@ -113,6 +113,6 @@ def submit():
         return send_file(filename,
                         mimetype='text/csv',
                         attachment_filename=filename,
-                        as_attachment=True)
+                        as_attachment=True) 
 
     return render_template('submit.html', form=form)
